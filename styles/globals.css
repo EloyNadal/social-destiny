@@ -2,6 +2,10 @@
   --color-primary: #1c5480;
   --color-secondary: #0099ff;
   --color-background: #0099ff33;
+  --color-background1: #68a13d9c;
+  --color-background2: #1a111182;
+  --color-background3: #0099ff33;
+  --color-background4: #020b22a6 ;
   --color-black: #000;
   --color-white: #fff;
   --fonts-base: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -9,9 +13,10 @@
 
 html,
 body {
-  background-image: radial-gradient(var(--color-background) 1px, transparent 1px), radial-gradient(var(--color-background) 1px, transparent 1px);
-  background-position: 0 0, 25px 25px;
-  background-size: 50px 50px;
+  background-image: radial-gradient(var(--color-background1) 1px, var(--color-background2) 1px), radial-gradient(var(--color-background3) 1px, var(--color-background4) 1px);
+  background-position: 0 5px, 20px 25px;
+  background-size: 60px 60px;
+  /* background-image:url('https://localhost:3000/destiny.png'); */
   padding: 0;
   margin: 0;
   font-family: var(--fonts-base);
