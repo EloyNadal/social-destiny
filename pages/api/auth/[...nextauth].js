@@ -1,9 +1,16 @@
 import NextAuth from "next-auth"
-import GithubProvider from "next-auth/providers/github"
 import BungieProvider from "next-auth/providers/bungie"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { PrismaClient } from "@prisma/client"
+
 //import { makeUserinfoRequest }
 
+const prisma = new PrismaClient()
+
 export default NextAuth({
+    //adapter
+    adapter: PrismaAdapter(prisma),
+    
     // Configure one or more authentication providers
     providers: [
         BungieProvider({
@@ -34,33 +41,33 @@ export default NextAuth({
             },
             profile(profile, tokens) {
                 const { bungieNetUser: user } = profile.Response;
-                const newUser = {
-                    newId: user.membershipId,
-                    ...tokens,
+                return {
                     id: user.membershipId,
                     membershipId: user.membershipId,
                     name: user.displayName,
                     email: null,
                     image: `https://www.bungie.net${user.profilePicturePath.startsWith("/") ? "" : "/"}${user.profilePicturePath}`,
                 }
-                return newUser;
             }
         }),
 
         // ...add more providers here
     ],
     callbacks: {
-        async signIn({ user, account, profile, email, credentials }) {
-            console.log({account});
-            return user;
+        session({ session, token, user }) {
+            session.user = user;
+            return session // The return type will match the one returned in `useSession()`
         },
-        async session({ session, user, token }) {
-            return session;
-        },
-        async jwt({ token, user, account, profile, isNewUser }) {
-            return token;
-        }
     },
+    /*  callbacks: {
+         async signIn({ user, account, profile, email, credentials }) {
+             console.log({account});
+             return user;
+         },
+         async jwt({ token, user, account, profile, isNewUser }) {
+             return token;
+         }
+     }, */
     secret: process.env.SECRET,
     theme: {
         colorScheme: "auto", // "auto" | "dark" | "light"
